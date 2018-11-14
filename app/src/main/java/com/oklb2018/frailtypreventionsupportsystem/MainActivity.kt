@@ -16,6 +16,10 @@ class MainActivity : AppCompatActivity() {
 
     val titles = listOf("Check List", "Walking", "Meals", "Brain Training", "My Data", "Find Activity")
 
+    /**
+     * 下記より拝借
+     * http://icooon-mono.com/
+     */
     val images = listOf(
         R.drawable.icon01, R.drawable.icon02, R.drawable.icon03,
         R.drawable.icon04, R.drawable.icon05, R.drawable.icon06
@@ -37,10 +41,45 @@ class MainActivity : AppCompatActivity() {
 
         listView1.setOnItemClickListener { parent, view, pos, id ->
             run {
-                Log.d("MainActivity", "button click")
-                Log.d("MainActivity", "second click")
+                Log.d("MainActivity", "item click, pos = $pos, id = $id")
                 for (v in parent.touchables) v.setBackgroundResource(R.drawable.colored_rectangler_00)
                 parent.getChildAt(pos).setBackgroundResource(R.drawable.colored_rectangler_01)
+                when (id) {
+                    0L -> {
+                        Log.d("MainActivity", "check, pos = $pos, id = $id")
+                        subContentArea.removeAllViews()
+                        layoutInflater.inflate(R.layout.sub_activity_main_checklist, subContentArea)
+                    }
+                    1L -> {
+                        Log.d("MainActivity", "walk, pos = $pos, id = $id")
+                        subContentArea.removeAllViews()
+                        layoutInflater.inflate(R.layout.sub_activity_main_walking, subContentArea)
+                    }
+                    2L -> {
+                        Log.d("MainActivity", "walk, pos = $pos, id = $id")
+                        subContentArea.removeAllViews()
+                        layoutInflater.inflate(R.layout.sub_activity_main_meals, subContentArea)
+                    }
+                    3L -> {
+                        Log.d("MainActivity", "walk, pos = $pos, id = $id")
+                        subContentArea.removeAllViews()
+                        layoutInflater.inflate(R.layout.sub_activity_main_brain_training, subContentArea)
+                    }
+                    4L -> {
+                        Log.d("MainActivity", "walk, pos = $pos, id = $id")
+                        subContentArea.removeAllViews()
+                        layoutInflater.inflate(R.layout.sub_activity_main_user_data, subContentArea)
+                    }
+                    5L -> {
+                        Log.d("MainActivity", "walk, pos = $pos, id = $id")
+                        subContentArea.removeAllViews()
+                        layoutInflater.inflate(R.layout.sub_activity_main_find_community, subContentArea)
+                    }
+                    else -> {
+                        Log.d("MainActivity", "else, pos = $pos, id = $id")
+                        subContentArea.removeAllViews()
+                    }
+                }
             }
         }
     }
@@ -65,7 +104,7 @@ class MenuListAdapter(context: Context, menus: List<MenuListData>) : ArrayAdapte
         context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-        var viewHolder: ViewHolder? = null
+        var viewHolder: ViewHolder?
         var view = convertView
         if (view == null) {
             view = layoutInflater.inflate(R.layout.list_items_1, parent, false)
