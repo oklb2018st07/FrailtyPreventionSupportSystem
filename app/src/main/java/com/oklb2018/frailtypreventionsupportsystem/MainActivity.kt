@@ -5,27 +5,29 @@ import android.content.Context
 import android.graphics.BitmapFactory
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import com.oklb2018.frailtypreventionsupportsystem.fragments.ChecklistFragment
+import com.oklb2018.frailtypreventionsupportsystem.fragments.WalkingFragment
 import kotlinx.android.synthetic.main.activity_main.*
+
 
 class MainActivity : AppCompatActivity() {
 
-    val titles = listOf("Check List", "Walking", "Meals", "Brain Training", "My Data", "Find Activity")
+    private val titles = listOf("Check List", "Walking", "Meals", "Brain Training", "My Data", "Find Activity")
 
     /**
      * 下記より拝借
      * http://icooon-mono.com/
      */
-    val images = listOf(
+    private val images = listOf(
         R.drawable.icon01, R.drawable.icon02, R.drawable.icon03,
         R.drawable.icon04, R.drawable.icon05, R.drawable.icon06
     )
 
-    val menus = List(titles.size) { i -> MenuListData(titles[i], images[i]) }
+    private val menus = List(titles.size) { i -> MenuListData(titles[i], images[i]) }
 
     /**
      * 周知の通り，onCreate
@@ -36,48 +38,34 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+
         val menuListAdapter = MenuListAdapter(this, menus)
         listView1.adapter = menuListAdapter
 
         listView1.setOnItemClickListener { parent, view, pos, id ->
             run {
-                Log.d("MainActivity", "item click, pos = $pos, id = $id")
                 for (v in parent.touchables) v.setBackgroundResource(R.drawable.colored_rectangler_00)
                 parent.getChildAt(pos).setBackgroundResource(R.drawable.colored_rectangler_01)
                 when (id) {
                     0L -> {
-                        Log.d("MainActivity", "check, pos = $pos, id = $id")
-                        subContentArea.removeAllViews()
-                        layoutInflater.inflate(R.layout.sub_activity_main_checklist, subContentArea)
+                        val fragmentTransaction = supportFragmentManager.beginTransaction()
+                        fragmentTransaction.replace(R.id.subContentArea, ChecklistFragment())
+                        fragmentTransaction.commit()
                     }
                     1L -> {
-                        Log.d("MainActivity", "walk, pos = $pos, id = $id")
-                        subContentArea.removeAllViews()
-                        layoutInflater.inflate(R.layout.sub_activity_main_walking, subContentArea)
+                        val fragmentTransaction = supportFragmentManager.beginTransaction()
+                        fragmentTransaction.replace(R.id.subContentArea, WalkingFragment())
+                        fragmentTransaction.commit()
                     }
                     2L -> {
-                        Log.d("MainActivity", "walk, pos = $pos, id = $id")
-                        subContentArea.removeAllViews()
-                        layoutInflater.inflate(R.layout.sub_activity_main_meals, subContentArea)
                     }
                     3L -> {
-                        Log.d("MainActivity", "walk, pos = $pos, id = $id")
-                        subContentArea.removeAllViews()
-                        layoutInflater.inflate(R.layout.sub_activity_main_brain_training, subContentArea)
                     }
                     4L -> {
-                        Log.d("MainActivity", "walk, pos = $pos, id = $id")
-                        subContentArea.removeAllViews()
-                        layoutInflater.inflate(R.layout.sub_activity_main_user_data, subContentArea)
                     }
                     5L -> {
-                        Log.d("MainActivity", "walk, pos = $pos, id = $id")
-                        subContentArea.removeAllViews()
-                        layoutInflater.inflate(R.layout.sub_activity_main_find_community, subContentArea)
                     }
                     else -> {
-                        Log.d("MainActivity", "else, pos = $pos, id = $id")
-                        subContentArea.removeAllViews()
                     }
                 }
             }
@@ -122,4 +110,3 @@ class MenuListAdapter(context: Context, menus: List<MenuListData>) : ArrayAdapte
     }
 
 }
-
