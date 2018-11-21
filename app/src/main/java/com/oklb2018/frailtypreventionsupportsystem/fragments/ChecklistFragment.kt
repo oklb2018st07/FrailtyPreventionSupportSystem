@@ -16,6 +16,9 @@ class ChecklistFragment : Fragment() {
         return inflater.inflate(R.layout.sub_activity_main_checklist, container, false)
     }
 
+    /**
+     * Fragmentの初期化はonActivityCreatedに記述する（onCreateの後に呼ばれる．初期化の最後に追加するのが様式らしい）
+     */
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         setCheckList()
@@ -23,7 +26,7 @@ class ChecklistFragment : Fragment() {
 
     private val questions = listOf(
         "一日中家の外には出ず，家の中で過ごすことが多いですか。",
-        "ふだん，仕事，買い物，散歩，通院などで外出する頻度はどれくらいですか。",
+        "2～3日に1回以上，仕事，買い物，散歩，通院などで外出しますか。",
         "家の中あるいは家の外で，趣味・楽しみ・好きでやっていることがありますか。",
         "親しくお話ができる近所の人はいますか。",
         "近所の人以外で，親しく行き来するような友達，別居家族または親戚はいますか。",
@@ -39,20 +42,40 @@ class ChecklistFragment : Fragment() {
         "この 6 か月間に，以前に比べてからだの筋肉や脂肪が落ちてきたと思いますか。"
     )
 
+    private val answers = arrayListOf<Boolean>()
+    private val rightAnswers = arrayListOf<Boolean>(
+        false, true, true, true, true, false, true,
+        true, false, false, false, true, true, false, false
+    )
+
+    /**
+     *
+     */
     private fun setCheckList(currentIndex: Int = 0) {
         checklistQuestionText.text = questions[currentIndex]
         checklistButton01.setOnClickListener { _ ->
             run {
                 Log.d("a", "pressed button yes")
-                setCheckList(currentIndex + 1)
+                answers.add(true)
+                if (currentIndex == questions.size - 1) checkAnswers()
+                else setCheckList(currentIndex + 1)
             }
         }
         checklistButton02.setOnClickListener { view ->
             run {
                 Log.d("a", "pressed button yes")
-                setCheckList(currentIndex + 1)
+                answers.add(false)
+                if (currentIndex == questions.size - 1) checkAnswers()
+                else setCheckList(currentIndex + 1)
             }
         }
+    }
 
+    private fun checkAnswers() {
+        var cnt = 0
+        for (i in 0 until answers.size) {
+            if (answers[i] != rightAnswers[i]) cnt++
+        }
+        checklistQuestionText.text = "score = $cnt"
     }
 }

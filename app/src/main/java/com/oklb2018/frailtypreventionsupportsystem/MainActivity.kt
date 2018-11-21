@@ -9,8 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import com.oklb2018.frailtypreventionsupportsystem.fragments.ChecklistFragment
-import com.oklb2018.frailtypreventionsupportsystem.fragments.WalkingFragment
+import com.oklb2018.frailtypreventionsupportsystem.fragments.*
 import kotlinx.android.synthetic.main.activity_main.*
 
 
@@ -58,12 +57,24 @@ class MainActivity : AppCompatActivity() {
                         fragmentTransaction.commit()
                     }
                     2L -> {
+                        val fragmentTransaction = supportFragmentManager.beginTransaction()
+                        fragmentTransaction.replace(R.id.subContentArea, MealsFragment())
+                        fragmentTransaction.commit()
                     }
                     3L -> {
+                        val fragmentTransaction = supportFragmentManager.beginTransaction()
+                        fragmentTransaction.replace(R.id.subContentArea, BrainTrainingFragment())
+                        fragmentTransaction.commit()
                     }
                     4L -> {
+                        val fragmentTransaction = supportFragmentManager.beginTransaction()
+                        fragmentTransaction.replace(R.id.subContentArea, UserDataFragment())
+                        fragmentTransaction.commit()
                     }
                     5L -> {
+                        val fragmentTransaction = supportFragmentManager.beginTransaction()
+                        fragmentTransaction.replace(R.id.subContentArea, FindCommunityFragment())
+                        fragmentTransaction.commit()
                     }
                     else -> {
                     }
