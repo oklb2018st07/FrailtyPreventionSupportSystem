@@ -7,8 +7,7 @@
         tools:context=".fragments.ChecklistFragment"
         android:orientation="vertical"
         android:paddingLeft="0dp"
-        android:paddingRight="0dp"
-        android:id="@+id/checklistParent">
+        android:paddingRight="0dp">
 
     <ScrollView android:layout_width="match_parent" android:layout_height="match_parent">
 
@@ -19,19 +18,8 @@
                       android:text="Check List"
                       android:textSize="60dp"
                       android:layout_gravity="center_horizontal"
-                      android:id="@+id/checklistQuestionText"/>
+                      android:id="@+id/checklistResultText"/>
 
-            <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content"
-                          android:layout_gravity="center">
-                <Button android:layout_width="wrap_content" android:layout_height="wrap_content"
-                        android:text="はい"
-                        android:id="@+id/checklistButton01"
-                        android:textSize="60dp"/>
-                <Button android:layout_width="wrap_content" android:layout_height="wrap_content"
-                        android:text="いいえ"
-                        android:id="@+id/checklistButton02"
-                        android:textSize="60dp"/>
-            </LinearLayout>
         </LinearLayout>
 
     </ScrollView>

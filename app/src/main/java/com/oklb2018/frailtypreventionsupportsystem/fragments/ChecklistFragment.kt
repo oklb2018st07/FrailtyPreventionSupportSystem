@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.view.LayoutInflater
 import android.view.View
 import com.oklb2018.frailtypreventionsupportsystem.R
+import kotlinx.android.synthetic.main.checklist_result.*
 import kotlinx.android.synthetic.main.sub_activity_main_checklist.*
 
 
@@ -76,6 +77,12 @@ class ChecklistFragment : Fragment() {
         for (i in 0 until answers.size) {
             if (answers[i] != rightAnswers[i]) cnt++
         }
-        checklistQuestionText.text = "score = $cnt"
+        checklistParent.removeAllViews()
+        layoutInflater.inflate(R.layout.checklist_result, checklistParent)
+        var string: String = ""
+        string += "Your Score : $cnt \n"
+        string += if (cnt >= 3) "あなたはフレイルまたはフレイル予備軍である可能性があります．\n"
+        else "フレイルの可能性は低いでしょう．\n"
+        checklistResultText.text = string
     }
 }
