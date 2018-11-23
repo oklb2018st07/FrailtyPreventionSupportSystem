@@ -89,6 +89,7 @@ class MainActivity : AppCompatActivity() {
         FileManager().checkExternalStoragePermission(this)
         FileManager().makeDirectory()
         FileManager().CsvWriter(fileName = "test.csv").write("name, id, num\nHiroshi, 810, 931")
+        Log.d("a", "default path\n    ->: ${FileManager().CsvReader(fileName = "test.csv").read()}")
     }
 }
 

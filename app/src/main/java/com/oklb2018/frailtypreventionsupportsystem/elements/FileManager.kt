@@ -2,16 +2,13 @@ package com.oklb2018.frailtypreventionsupportsystem.elements
 
 import android.Manifest
 import android.app.Activity
-import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Environment
 import android.support.v4.app.ActivityCompat
 import android.util.Log
 import android.widget.Toast
-import java.io.BufferedWriter
-import java.io.File
-import java.io.FileOutputStream
-import java.io.OutputStreamWriter
+import java.io.*
+import java.lang.StringBuilder
 
 public class FileManager {
 
@@ -28,7 +25,22 @@ public class FileManager {
     }
 
     public inner class CsvReader(filePath: String = appPath, fileName: String) {
-        val list: List<List<String>>? = null
+        val file: File = File(filePath + fileName)
+
+        public fun read(): String{
+            val stringBuilder: StringBuilder = StringBuilder()
+            val fileInputStream: FileInputStream = FileInputStream(file)
+            val inputStreamReader: InputStreamReader = InputStreamReader(fileInputStream, "UTF-8")
+            val bufferedReader: BufferedReader = BufferedReader(inputStreamReader)
+            bufferedReader.use {
+                var line = it.readLine()
+                while (line != null) {
+                    stringBuilder.append(line).append("\n")
+                    line = it.readLine()
+                }
+            }
+            return stringBuilder.toString()
+        }
     }
 
     public inner class CsvWriter(filePath: String = appPath, fileName: String) {
@@ -36,8 +48,8 @@ public class FileManager {
 
         public fun write(str: String) {
             val fileOutputStream: FileOutputStream = FileOutputStream(file, true)
-            val outStreamWriter: OutputStreamWriter = OutputStreamWriter(fileOutputStream, "UTF-8")
-            val bufferedWriter: BufferedWriter = BufferedWriter(outStreamWriter)
+            val outputStreamWriter: OutputStreamWriter = OutputStreamWriter(fileOutputStream, "UTF-8")
+            val bufferedWriter: BufferedWriter = BufferedWriter(outputStreamWriter)
             bufferedWriter.write(str)
             bufferedWriter.flush()
         }
