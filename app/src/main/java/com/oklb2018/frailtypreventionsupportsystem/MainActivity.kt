@@ -3,22 +3,20 @@ package com.oklb2018.frailtypreventionsupportsystem
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.BitmapFactory
-import android.hardware.Sensor
-import android.hardware.SensorEvent
-import android.hardware.SensorEventListener
-import android.hardware.SensorManager
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Environment
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import com.oklb2018.frailtypreventionsupportsystem.elements.FileManager
 import com.oklb2018.frailtypreventionsupportsystem.fragments.*
 import kotlinx.android.synthetic.main.activity_main.*
 
 
-class MainActivity : AppCompatActivity(), SensorEventListener {
+class MainActivity : AppCompatActivity() {
 
     private val titles = listOf("Check List", "Walking", "Meals", "Brain Training", "My Data", "Find Activity")
 
@@ -32,10 +30,6 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
     )
 
     private val menus = List(titles.size) { i -> MenuListData(titles[i], images[i]) }
-
-    lateinit var manager: SensorManager
-    var detectorSensor: Sensor? = null
-    var counterSensor: Sensor? = null
 
     /**
      * 周知の通り，onCreate
@@ -90,38 +84,11 @@ class MainActivity : AppCompatActivity(), SensorEventListener {
             }
         }
 
-        manager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
-        detectorSensor = manager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR)
-        counterSensor = manager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)
+        Log.d("a", "default path : ${Environment.getExternalStorageDirectory().path}")
 
-        if (detectorSensor == null) Log.d("a", "DS is NULL!!") else  Log.d("a", "DS is not NULL")
-        if (counterSensor == null) Log.d("a", "CS is NULL!!") else  Log.d("a", "CS is not NULL")
-
-        val sl = manager.getSensorList(Sensor.TYPE_ALL)
-        for (s in sl) {
-            Log.d("a", "sensor : ${s.name}, ${s.type}")
-        }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        manager.registerListener(this, detectorSensor, SensorManager.SENSOR_DELAY_NORMAL)
-        manager.registerListener(this, counterSensor, SensorManager.SENSOR_DELAY_NORMAL)
-        Log.d("a", "Listener set")
-    }
-
-    override fun onSensorChanged(event: SensorEvent?) {
-        val sensor = event!!.sensor
-        val values = event.values
-        val timestamp = event.timestamp
-        if (sensor.type == Sensor.TYPE_STEP_COUNTER) {
-            Log.d("a", "stp cnt = ${values[0]}")
-        }
-        Log.d("a", "onSensorChanged")
-    }
-
-    override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
-
+        FileManager().checkExternalStoragePermission(this)
+        FileManager().makeDirectory()
+        FileManager().CsvWriter(fileName = "test.csv").write("name, id, num\nHiroshi, 810, 931")
     }
 }
 
