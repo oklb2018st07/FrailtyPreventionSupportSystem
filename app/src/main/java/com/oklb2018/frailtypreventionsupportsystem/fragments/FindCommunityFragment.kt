@@ -22,24 +22,6 @@ class FindCommunityFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        /*
-        webView.settings.setGeolocationEnabled(true)
-        webView.settings.javaScriptEnabled = true
-        */
-        //webView.loadUrl("https://www.google.co.jp")
-        /*
-        webView.webChromeClient = object: WebChromeClient() {
-            override fun onGeolocationPermissionsShowPrompt(
-                origin: String?,
-                callback: GeolocationPermissions.Callback?
-            ) {
-                super.onGeolocationPermissionsShowPrompt(origin, callback)
-                if (callback != null) {
-                    callback.invoke(origin, true, true)
-                }
-            }
-        }
-        */
         startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://drive.google.com/open?id=1i3M4ta-oOkB14_u-8lIliLIq6_UlR97q&usp=sharing")))
         Log.d("debug", "Goto My Maps")
     }
