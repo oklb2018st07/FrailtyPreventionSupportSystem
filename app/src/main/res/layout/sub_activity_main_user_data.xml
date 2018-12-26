@@ -4,13 +4,29 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".MainActivity"
-        android:orientation="horizontal"
+        tools:context=".fragments.UserDataFragment"
+        android:orientation="vertical"
         android:paddingLeft="0dp"
         android:paddingRight="0dp">
 
-    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-              android:text="Check your Health Condition"
-              android:textSize="60dp"/>
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                  android:orientation="horizontal">
+        <Button android:layout_width="0dp" android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:id="@+id/walkingDataShowButton"
+                android:text="歩数のデータを見る"/>
+        <Button android:layout_width="0dp" android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:id="@+id/brainTrainingDataShowButton"
+                android:text="脳トレのデータを見る"/>
+        <Button android:layout_width="0dp" android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:id="@+id/extraDataShowButton"
+                android:text="その他のデータを見る"/>
+    </LinearLayout>
+
+    <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent"
+                  android:orientation="horizontal"
+                  android:id="@+id/userDataArea"></LinearLayout>
 
 </LinearLayout>

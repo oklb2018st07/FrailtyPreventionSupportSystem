@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".fragments.MealsFragment"
+        android:orientation="vertical"
+        android:paddingLeft="0dp"
+        android:paddingRight="0dp">
+
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                  android:orientation="horizontal">
+        <ImageView android:layout_width="80dp" android:layout_height="80dp"
+                   android:id="@+id/mealsImageView"
+                   android:layout_gravity="center"/>
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                  android:id="@+id/mealsQuestionTextView"
+                  android:textSize="40sp"/>
+    </LinearLayout>
+
+    <ScrollView android:layout_width="match_parent" android:layout_height="match_parent">
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                      android:orientation="vertical">
+            <RadioGroup android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:id="@+id/radioGroup10">
+                <RadioButton android:layout_width="match_parent" android:layout_height="wrap_content"
+                             android:text="ほぼ毎日食べる"
+                             android:textSize="40sp"
+                             android:id="@+id/radioButton4"/>
+                <RadioButton android:layout_width="match_parent" android:layout_height="wrap_content"
+                             android:text="2日に1回食べる"
+                             android:textSize="40sp"
+                             android:id="@+id/radioButton3"/>
+                <RadioButton android:layout_width="match_parent" android:layout_height="wrap_content"
+                             android:text="週に1，2回食べる"
+                             android:textSize="40sp"
+                             android:id="@+id/radioButton2"/>
+                <RadioButton android:layout_width="match_parent" android:layout_height="wrap_content"
+                             android:text="ほとんど食べない"
+                             android:textSize="40sp"
+                             android:id="@+id/radioButton1"/>
+            </RadioGroup>
+
+            <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content"
+                          android:layout_gravity="center">
+                <Button android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:text="次へ"
+                        android:id="@+id/mealsNextQuestionButton"
+                        android:textSize="40dp"/>
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

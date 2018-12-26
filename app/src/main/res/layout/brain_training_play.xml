@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:context=".fragments.BrainTrainingFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingLeft="10dp"
+        android:background="@color/background_neutral">
+
+    <LinearLayout android:layout_width="0dp" android:layout_height="0dp"
+                  android:orientation="horizontal"
+                  android:id="@+id/rowLayout01">
+
+        <FrameLayout android:layout_width="wrap_content" android:layout_height="wrap_content">
+            <ImageView android:layout_width="0dp" android:layout_height="0dp"
+                       android:id="@+id/ImageView01"/>
+
+            <ImageView android:layout_width="0dp" android:layout_height="0dp"
+                       android:id="@+id/coverImageView01"/>
+        </FrameLayout>
+
+        <FrameLayout android:layout_width="wrap_content" android:layout_height="wrap_content">
+            <ImageView android:layout_width="0dp" android:layout_height="0dp"
+                       android:id="@+id/ImageView02"/>
+
+            <ImageView android:layout_width="0dp" android:layout_height="0dp"
+                       android:id="@+id/coverImageView02"/>
+        </FrameLayout>
+
+        <FrameLayout android:layout_width="wrap_content" android:layout_height="wrap_content">
+            <ImageView android:layout_width="0dp" android:layout_height="0dp"
+                       android:id="@+id/ImageView03"/>
+
+            <ImageView android:layout_width="0dp" android:layout_height="0dp"
+                       android:id="@+id/coverImageView03"/>
+        </FrameLayout>
+
+        <FrameLayout android:layout_width="wrap_content" android:layout_height="wrap_content">
+            <ImageView android:layout_width="0dp" android:layout_height="0dp"
+                       android:id="@+id/ImageView04"/>
+
+            <ImageView android:layout_width="0dp" android:layout_height="0dp"
+                       android:id="@+id/coverImageView04"/>
+        </FrameLayout>
+
+    </LinearLayout>
+
+    <LinearLayout android:layout_width="0dp" android:layout_height="0dp"
+                  android:orientation="horizontal"
+                  android:id="@+id/rowLayout02">
+
+        <FrameLayout android:layout_width="wrap_content" android:layout_height="wrap_content">
+            <ImageView android:layout_width="0dp" android:layout_height="0dp"
+                       android:id="@+id/ImageView05"/>
+
+            <ImageView android:layout_width="0dp" android:layout_height="0dp"
+                       android:id="@+id/coverImageView05"/>
+        </FrameLayout>
+
+        <FrameLayout android:layout_width="wrap_content" android:layout_height="wrap_content">
+            <ImageView android:layout_width="0dp" android:layout_height="0dp"
+                       android:id="@+id/ImageView06"/>
+
+            <ImageView android:layout_width="0dp" android:layout_height="0dp"
+                       android:id="@+id/coverImageView06"/>
+        </FrameLayout>
+
+        <FrameLayout android:layout_width="wrap_content" android:layout_height="wrap_content">
+            <ImageView android:layout_width="0dp" android:layout_height="0dp"
+                       android:id="@+id/ImageView07"/>
+
+            <ImageView android:layout_width="0dp" android:layout_height="0dp"
+                       android:id="@+id/coverImageView07"/>
+        </FrameLayout>
+
+        <FrameLayout android:layout_width="wrap_content" android:layout_height="wrap_content">
+            <ImageView android:layout_width="0dp" android:layout_height="0dp"
+                       android:id="@+id/ImageView08"/>
+
+            <ImageView android:layout_width="0dp" android:layout_height="0dp"
+                       android:id="@+id/coverImageView08"/>
+        </FrameLayout>
+
+    </LinearLayout>
+
+    <LinearLayout android:layout_width="0dp" android:layout_height="0dp"
+                  android:orientation="horizontal"
+                  android:id="@+id/rowLayout03">
+
+        <FrameLayout android:layout_width="wrap_content" android:layout_height="wrap_content">
+            <ImageView android:layout_width="0dp" android:layout_height="0dp"
+                       android:id="@+id/ImageView09"/>
+
+            <ImageView android:layout_width="0dp" android:layout_height="0dp"
+                       android:id="@+id/coverImageView09"/>
+        </FrameLayout>
+
+        <FrameLayout android:layout_width="wrap_content" android:layout_height="wrap_content">
+            <ImageView android:layout_width="0dp" android:layout_height="0dp"
+                       android:id="@+id/ImageView10"/>
+
+            <ImageView android:layout_width="0dp" android:layout_height="0dp"
+                       android:id="@+id/coverImageView10"/>
+        </FrameLayout>
+
+        <FrameLayout android:layout_width="wrap_content" android:layout_height="wrap_content">
+            <ImageView android:layout_width="0dp" android:layout_height="0dp"
+                       android:id="@+id/ImageView11"/>
+
+            <ImageView android:layout_width="0dp" android:layout_height="0dp"
+                       android:id="@+id/coverImageView11"/>
+        </FrameLayout>
+
+        <FrameLayout android:layout_width="wrap_content" android:layout_height="wrap_content">
+            <ImageView android:layout_width="0dp" android:layout_height="0dp"
+                       android:id="@+id/ImageView12"/>
+
+            <ImageView android:layout_width="0dp" android:layout_height="0dp"
+                       android:id="@+id/coverImageView12"/>
+        </FrameLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

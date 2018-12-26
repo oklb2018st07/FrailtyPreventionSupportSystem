@@ -4,14 +4,14 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".fragments.FindCommunityFragment"
-        android:orientation="horizontal"
+        tools:context=".fragments.TMTFragment"
+        android:orientation="vertical"
         android:paddingLeft="0dp"
         android:paddingRight="0dp">
 
-    <WebView android:layout_width="match_parent" android:layout_height="match_parent"
-             android:id="@+id/webView">
-
-    </WebView>
+    <com.oklb2018.frailtypreventionsupportsystem.fragments.TMTSurfaceView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/surfaceViewForTMT"/>
 
 </LinearLayout>

@@ -5,5 +5,7 @@
     <color name="colorAccent">#D81B60</color>
     <color name="background_selected">#AADDFF</color>
     <color name="background_neutral">#FFFFFF</color>
+    <color name="dialog_background">#FFF0F0F0</color>
+    <color name="dialog_title">#FF8080F0</color>
 
 </resources>
