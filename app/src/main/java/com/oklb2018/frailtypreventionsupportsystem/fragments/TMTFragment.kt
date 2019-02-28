@@ -1,17 +1,20 @@
 package com.oklb2018.frailtypreventionsupportsystem.fragments
 
 import android.content.Context
+import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
-import android.graphics.PorterDuff
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.util.AttributeSet
 import android.util.Log
 import android.view.*
 import com.oklb2018.frailtypreventionsupportsystem.R
-import kotlinx.android.synthetic.main.sub_activity_main_tmt.*
+import com.oklb2018.frailtypreventionsupportsystem.elements.ActiveSurfaceView
+import com.oklb2018.frailtypreventionsupportsystem.elements.AppManager
+import com.oklb2018.frailtypreventionsupportsystem.elements.drawTextCenter
 import java.util.*
+import kotlin.collections.ArrayList
 
 public class TMTFragment : Fragment() {
 
@@ -22,131 +25,182 @@ public class TMTFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         //TMTSurfaceView(activity!!, surfaceViewForTMT)
-
     }
 }
 
-class TMTSurfaceView : SurfaceView, SurfaceHolder.Callback, Runnable {
+class TMTSurfaceView : ActiveSurfaceView {
 
     companion object {
-        private const val FPS = 20
-        private const val FRAME: Long = (1000f / FPS).toLong()
-        private const val TOUCH_INIT = 0
-        private const val TOUCH_DOWN = 1
-        private const val TOUCH_MOVE = 2
-        private const val TOUCH_UP = 3
+        private const val STATUS_INIT = 0
+        private const val STATUS_STANDBY = 1
+        private const val STATUS_RUN = 2
+        private const val STATUS_FINISH = 3
+        private const val STATUS_DESTROY = 4
+
+        private const val TITLE_MESSAGE01 = "1から順に10までの数字を"
+        private const val TITLE_MESSAGE02 = "順番にタッチしてください"
+
+        private const val CIRCLE_RADIUS = 100f
     }
 
-    lateinit var surfaceHolder: SurfaceHolder
-    var thread: Thread? = null
+    var viewStatus = STATUS_INIT
 
-    var lastTouchedX: Float = 0f
-    var lastTouchedY: Float = 0f
-    var touchedX: Float = 0f
-    var touchedY: Float = 0f
+    lateinit var startCalendar: Calendar
+    lateinit var finishCalendar: Calendar
 
-    var touchStatus = TOUCH_INIT
+    lateinit var circles: ArrayList<Circle>
+    var currentCircle: Circle? = null
 
-    var circles = listOf(
-        Circle(100f, 100f, 100f, 1),
-        Circle(300f, 200f, 100f, 2),
-        Circle(500f, 300f, 100f, 3),
-        Circle(700f, 400f, 100f, 4),
-        Circle(900f, 600f, 100f, 5),
-        Circle(1100f, 700f, 100f, 6),
-        Circle(100f, 800f, 100f, 7),
-        Circle(500f, 900f, 100f, 8),
-        Circle(900f, 100f, 100f, 9),
-        Circle(1300f, 200f, 100f, 10)
-    )
+    constructor(context: Context) : super(context)
 
-    constructor(context: Context) : super(context) {
-        surfaceHolder = holder
-        surfaceHolder.addCallback(this)
+    constructor(context: Context, attributeSet: AttributeSet) : super(context, attributeSet)
+
+    constructor(context: Context, attributeSet: AttributeSet, defStyle: Int) : super(context, attributeSet, defStyle)
+
+    constructor(context: Context, surface: SurfaceView) : super(context, surface)
+
+    override fun initialize() {
+        generate()
+        viewStatus = STATUS_STANDBY
+        startCalendar = Calendar.getInstance()
     }
 
-    constructor(context: Context, attributeSet: AttributeSet) : super(context, attributeSet) {
-        surfaceHolder = holder
-        surfaceHolder.addCallback(this)
+    private fun generate() {
+        circles = ArrayList()
+        val rnd = Random()
+        for (i in 1..10) {
+            var circle = Circle(0f, 0f, CIRCLE_RADIUS, i)
+            var isAdjusted = false
+            while (!isAdjusted) {
+                circle.x = rnd.nextInt((width - CIRCLE_RADIUS).toInt()) + CIRCLE_RADIUS
+                circle.y = rnd.nextInt((height - CIRCLE_RADIUS).toInt()) + CIRCLE_RADIUS
+                isAdjusted = true
+                for (c in circles) {
+                    if (circle.distance(c.x, c.y) < 200) {
+                        isAdjusted = false
+                    }
+                }
+                if (circle.x < CIRCLE_RADIUS || circle.x > width - CIRCLE_RADIUS || circle.y < CIRCLE_RADIUS || circle.y > height - CIRCLE_RADIUS) {
+                    isAdjusted = false
+                }
+            }
+            circles.add(circle)
+        }
+        for (i in 0 until circles.size - 1) {
+            circles[i].nextCircle = circles[i + 1]
+            Log.d("debug", circles[i].nextCircle!!.text)
+        }
+        currentCircle = circles[0]
     }
 
-    constructor(context: Context, attributeSet: AttributeSet, defStyle: Int) : super(context, attributeSet, defStyle) {
-        surfaceHolder = holder
-        surfaceHolder.addCallback(this)
-    }
+    override fun update(canvas: Canvas) {
+        canvas.drawColor(Color.WHITE)
+        when (viewStatus) {
+            STATUS_STANDBY -> {
+                updateStandby(canvas)
+            }
+            STATUS_RUN -> {
+                updateMain(canvas)
+            }
+            STATUS_FINISH -> {
+                drawResult(canvas)
+            }
+            STATUS_DESTROY -> {
 
-    constructor(context: Context, surface: SurfaceView)
-            : super(context) {
-        surfaceHolder = surface.holder
-        surfaceHolder.addCallback(this)
-    }
-
-    override fun run() {
-        var loopCounter: Long = 0
-        var waitTime: Long = 0
-        val starTime = System.currentTimeMillis()
-
-        while (thread != null) {
-            loopCounter++
-            update()
-            draw()
-            waitTime = (loopCounter * FRAME) - (System.currentTimeMillis() - starTime)
-            if (waitTime > 0) {
-                Thread.sleep(waitTime)
             }
         }
     }
 
-    private fun update() {
-
-    }
-
-    private fun draw() {
-        val canvas = surfaceHolder.lockCanvas()
-        canvas.drawColor(Color.WHITE)
-        canvas.drawText("$touchedX, $touchedY", 1200f, 1000f, Paint().apply {
+    private fun updateStandby(canvas: Canvas) {
+        canvas.drawTextCenter(TITLE_MESSAGE01, (width / 2).toFloat(), (height / 2).toFloat() - 280f, Paint().apply {
             style = Paint.Style.FILL
-            color = Color.RED
-            textSize = 32f
+            color = Color.BLACK
+            textSize = 120f
         })
+        canvas.drawTextCenter(TITLE_MESSAGE02, (width / 2).toFloat(), (height / 2).toFloat() - 150f, Paint().apply {
+            style = Paint.Style.FILL
+            color = Color.BLACK
+            textSize = 120f
+        })
+
+        canvas.drawTextCenter("${((100L - loopCounter) / FPS) + 1}", (width / 2).toFloat(), (height / 2).toFloat() + 150f, Paint().apply {
+            style = Paint.Style.FILL
+            color = Color.BLACK
+            textSize = 200f
+        })
+        if (loopCounter >= 100L) {
+            viewStatus = STATUS_RUN
+            startCalendar = Calendar.getInstance()
+        }
+    }
+
+    private fun updateMain(canvas: Canvas) {
+        if ((touchStatus == TOUCH_DOWN || touchStatus == TOUCH_MOVE) && !currentCircle!!.isClicked && currentCircle!!.isInside(touchedX, touchedY)) {
+            Log.d("debug", "num: ${currentCircle!!.value} is clicked!")
+            currentCircle!!.isClicked = true
+            if (currentCircle!!.nextCircle == null){
+                finishCalendar = Calendar.getInstance()
+                viewStatus = STATUS_FINISH
+                return
+            }
+            currentCircle = currentCircle!!.nextCircle
+        }
+        drawMain(canvas)
+    }
+
+    private fun drawMain(canvas: Canvas) {
+        val textPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+            style = Paint.Style.FILL
+            textSize = 100f
+        }
         for (c in circles) {
-            canvas.drawCircle(c.x, c.y, c.r, Paint().apply {
-                style = Paint.Style.STROKE
-                color = Color.RED
-            })
-            canvas.drawText(c.text, c.x - c.r / 4, c.y + c.r / 4, Paint().apply {
-                style = Paint.Style.FILL
-                color = Color.RED
-                textSize = 100f
-            })
+            if (c.isClicked) {
+                canvas.drawCircle(c.x, c.y, c.r, Paint().apply {
+                    style = Paint.Style.STROKE
+                    strokeWidth = 3f
+                    color = Color.BLACK
+                })
+                textPaint.color = Color.BLACK
+                canvas.drawTextCenter(c.text, c.x, c.y, textPaint)
+            } else {
+                canvas.drawCircle(c.x, c.y, c.r, Paint().apply {
+                    style = Paint.Style.FILL
+                    color = Color.BLACK
+                })
+                textPaint.color = Color.WHITE
+                canvas.drawTextCenter(c.text, c.x, c.y, textPaint)
+            }
         }
-        surfaceHolder.unlockCanvasAndPost(canvas)
     }
 
-    override fun surfaceChanged(holder: SurfaceHolder?, format: Int, width: Int, height: Int) {
-
-    }
-
-    override fun surfaceCreated(holder: SurfaceHolder?) {
-        thread = Thread(this).apply { start() }
-    }
-
-    override fun surfaceDestroyed(holder: SurfaceHolder?) {
-        thread = null
-    }
-
-    override fun onTouchEvent(event: MotionEvent?): Boolean {
-        lastTouchedX = touchedX
-        lastTouchedY = touchedY
-        touchedX = event!!.x
-        touchedY = event!!.y
-        when (event!!.action) {
-            MotionEvent.ACTION_DOWN -> touchStatus = TOUCH_DOWN
-            MotionEvent.ACTION_MOVE -> touchStatus = TOUCH_MOVE
-            MotionEvent.ACTION_UP -> touchStatus = TOUCH_UP
+    private fun drawResult(canvas: Canvas) {
+        val textPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+            style = Paint.Style.FILL
+            color = Color.BLACK
+            textSize = 100f
         }
-        return true
+        canvas.drawTextCenter(AppManager.deffDateString(finishCalendar, startCalendar), (width / 2).toFloat(), (height / 2).toFloat(), textPaint)
     }
 
-    data class Circle(var x: Float, var y: Float, var r: Float, var value: Int, var text: String = value.toString(), var isClicked: Boolean = false)
+    override fun onFinish() {
+        Log.d("debug", "TMTSurfaceView is finished")
+    }
+
+    class Circle(
+        var x: Float,
+        var y: Float,
+        var r: Float,
+        var value: Int,
+        var text: String = value.toString(),
+        var isClicked: Boolean = false,
+        var nextCircle: Circle? = null
+    ) {
+        fun distance(cx: Float, cy: Float): Float {
+            return Math.sqrt(((x - cx) * (x - cx) + (y - cy) * (y - cy)).toDouble()).toFloat()
+        }
+
+        fun isInside(cx: Float, cy: Float): Boolean {
+            return distance(cx, cy) < r
+        }
+    }
 }

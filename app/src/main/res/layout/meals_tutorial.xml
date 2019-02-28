@@ -4,11 +4,11 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".fragments.ChecklistFragment"
+        tools:context=".fragments.MealsFragment"
         android:orientation="vertical"
         android:paddingLeft="0dp"
         android:paddingRight="0dp"
-        android:id="@+id/checklistParent">
+        android:id="@+id/mealsTutorialFragmentParent">
 
     <ScrollView android:layout_width="match_parent" android:layout_height="match_parent">
 
@@ -18,21 +18,16 @@
             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
                       android:text="Check List"
                       android:textSize="60dp"
-                      android:textColor="#000000"
                       android:layout_gravity="center_horizontal"
-                      android:id="@+id/checklistQuestionText"/>
+                      android:textColor="#000000"
+                      android:id="@+id/mealsTutorialText"/>
 
-            <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content"
-                          android:layout_gravity="center">
-                <Button android:layout_width="wrap_content" android:layout_height="wrap_content"
-                        android:text="はい"
-                        android:id="@+id/checklistButton01"
-                        android:textSize="60dp"/>
-                <Button android:layout_width="wrap_content" android:layout_height="wrap_content"
-                        android:text="いいえ"
-                        android:id="@+id/checklistButton02"
-                        android:textSize="60dp"/>
-            </LinearLayout>
+            <Button android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="はじめる"
+                    android:textSize="60dp"
+                    android:id="@+id/mealsTutorialFinishButton"
+                    android:layout_gravity="center_horizontal"/>
+
         </LinearLayout>
 
     </ScrollView>

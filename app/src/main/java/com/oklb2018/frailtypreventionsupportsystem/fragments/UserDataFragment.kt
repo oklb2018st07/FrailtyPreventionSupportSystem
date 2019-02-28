@@ -19,6 +19,11 @@ import com.oklb2018.frailtypreventionsupportsystem.R
 import kotlinx.android.synthetic.main.sub_activity_main_user_data.*
 import kotlinx.android.synthetic.main.sub_fragment_user_data_brain_training.*
 import kotlinx.android.synthetic.main.sub_fragment_user_data_walking.*
+import com.github.mikephil.charting.data.BarData
+import com.github.mikephil.charting.data.BarDataSet
+import com.github.mikephil.charting.data.BarEntry
+import com.oklb2018.frailtypreventionsupportsystem.elements.FileManager
+import kotlinx.android.synthetic.main.sub_fragment_user_data_extra.*
 
 
 class UserDataFragment : Fragment() {
@@ -29,10 +34,10 @@ class UserDataFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        var string: String = ""
-        for (p in WalkingFragment.walkingParameters) {
-            string += p.toString() + "\n"
-        }
+
+        val fragmentTransaction = activity!!.supportFragmentManager.beginTransaction()
+        fragmentTransaction.replace(R.id.userDataArea, WalkingDataChartFragment())
+        fragmentTransaction.commit()
 
         walkingDataShowButton.setOnClickListener {
             //showWalkingDataBarChart()
@@ -46,12 +51,10 @@ class UserDataFragment : Fragment() {
             fragmentTransaction.commit()
         }
         extraDataShowButton.setOnClickListener {
-            showExtraData()
+            val fragmentTransaction = activity!!.supportFragmentManager.beginTransaction()
+            fragmentTransaction.replace(R.id.userDataArea, ExtraDataFragment())
+            fragmentTransaction.commit()
         }
-    }
-
-    private fun showBrainTrainingDataChart() {
-
     }
 
     private fun showExtraData() {
@@ -67,7 +70,75 @@ class WalkingDataChartFragment: Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        showWalkingDataBarChart()
+        //showWalkingDataBarChart()
+        showWalkingDataBarChart01()
+    }
+
+    private fun showWalkingDataBarChart01() {
+        val labels = ArrayList<String>()
+        val entries01 = ArrayList<BarEntry>()
+        val entries02 = ArrayList<BarEntry>()
+
+        labels.add("")
+        for (wp in WalkingFragment.walkingParameters) {
+            labels.add(DateFormat.format("MM/dd", wp.calendar).toString())
+        }
+        for (i in 0 until WalkingFragment.walkingParameters.size) {
+            entries01.add(BarEntry((i - 0.2).toFloat(), WalkingFragment.walkingParameters[i].goal.toFloat()))
+            entries02.add(BarEntry((i + 0.2).toFloat(), WalkingFragment.walkingParameters[i].steps.toFloat()))
+        }
+        val barDataSet01 = BarDataSet(entries01, "目標歩数").apply {
+            color = Color.RED
+            barBorderWidth = 1f
+        }
+        val barDataSet02 = BarDataSet(entries02, "達成歩数").apply {
+            color = Color.BLUE
+            barBorderWidth = 1f
+        }
+        walkingDataChart01.data = BarData(barDataSet01, barDataSet02)
+        val barData = BarData(barDataSet01, barDataSet02).apply {
+            barWidth = 0.3f
+        }
+        walkingDataChart01.data = barData
+        walkingDataChart01.axisLeft.apply {
+            axisMaximum = 50000F
+            axisMinimum = 0F
+            labelCount = 5
+            setDrawTopYLabelEntry(true)
+            setValueFormatter { value, axis -> "" + value.toInt() }
+        }
+        walkingDataChart01.axisRight.apply {
+            setDrawLabels(false)
+            setDrawGridLines(false)
+            setDrawZeroLine(false)
+            setDrawTopYLabelEntry(true)
+        }
+        walkingDataChart01.xAxis.apply {
+            valueFormatter = IndexAxisValueFormatter(labels)
+            labelCount = 10
+            position = XAxis.XAxisPosition.BOTTOM
+            setDrawLabels(true)
+            setDrawGridLines(false)
+            setDrawAxisLine(true)
+        }
+
+        walkingDataChart01.apply {
+            setDrawValueAboveBar(true)
+            description.isEnabled = false
+            isClickable = false
+            isDragEnabled = true
+            legend.textSize = 100f
+            isHorizontalScrollBarEnabled = true
+            setTouchEnabled(true)
+            setScaleEnabled(true)
+            setDrawGridBackground(false)
+            setPinchZoom(true)
+            setVisibleXRangeMaximum(10F)
+            animateY(1200, Easing.EasingOption.Linear)
+            enableScroll()
+            moveViewToX(WalkingFragment.walkingParameters.size.toFloat())
+        }
+        walkingDataChart01.invalidate()
     }
 
     private fun showWalkingDataBarChart() {
@@ -122,20 +193,31 @@ class WalkingDataChartFragment: Fragment() {
     }
 
     private fun getWalkingBarData(): ArrayList<IBarDataSet> {
-        val entries = ArrayList<BarEntry>().apply {
+        val entries01 = ArrayList<BarEntry>().apply {
             var i = 0
             for (wp in WalkingFragment.walkingParameters) {
                 i++
                 add(BarEntry(i.toFloat(), wp.steps.toFloat()))
             }
         }
-
-        val dataSet = BarDataSet(entries, "bar").apply {
+        val dataSet01 = BarDataSet(entries01, "bar").apply {
+            valueFormatter = IValueFormatter { value, _, _, _ -> "" + value.toInt() }
+            isHighlightEnabled = false
+        }
+        val entries02 = ArrayList<BarEntry>().apply {
+            var i = 0
+            for (wp in WalkingFragment.walkingParameters) {
+                i++
+                add(BarEntry(i.toFloat(), wp.goal.toFloat()))
+            }
+        }
+        val dataSet02 = BarDataSet(entries02, "bar").apply {
             valueFormatter = IValueFormatter { value, _, _, _ -> "" + value.toInt() }
             isHighlightEnabled = false
         }
         val bars = ArrayList<IBarDataSet>()
-        bars.add(dataSet)
+        bars.add(dataSet01)
+        bars.add(dataSet02)
         return bars
     }
 }
@@ -159,13 +241,13 @@ class BrainTrainingDataChartFragment: Fragment() {
         var sec = (parameters.time / 1000).toInt() % 60
         var min = (parameters.time / 1000 / 60).toInt() % 60
         var hou = (parameters.time / 1000 / 60 / 60).toInt() % 60
-        var time = String.format("平均プレイ時間 : %02d:%02d:%02d:%03d\n", hou, min, sec, mil)
-        text += "平均プレイ時間 : ${parameters.time}\n"
-        text += "平均プレイ時間 : $hou:$min:$sec: \n"
+        //var time = String.format("平均プレイ時間 : %02d:%02d:%02d:%03d\n", hou, min, sec, mil)
+        text += "\n"
+        var time = String.format("平均プレイ時間 : %02d分 %02d秒 %03d\n", min, sec, mil)
         text += time
         text += "平均難易度 : ${parameters.difficulty}\n"
-        text += "平均正答率 : ${parameters.rate}\n"
-        text += "総プレイ回数 : ${parameters.play}\n"
+        text += "平均正答率 : ${parameters.rate * 100} %\n"
+        text += "総プレイ回数 : ${parameters.play.toInt()} 回\n"
         brainTrainingDataTextView01.text = text
     }
 
@@ -248,5 +330,75 @@ class BrainTrainingDataChartFragment: Fragment() {
         override fun toString(): String {
             return "$time,$difficulty,$rate,$play"
         }
+    }
+}
+
+class ExtraDataFragment: Fragment() {
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.sub_fragment_user_data_extra, container, false)
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        showMealsRadarChart()
+    }
+
+    var foods = listOf("肉", "魚介類", "卵料理", "大豆・大豆製品", "牛乳", "緑黄色野菜", "海藻類", "いも類", "果物", "油")
+
+    private fun showMealsRadarChart() {
+        val labels = ArrayList<String>()
+        val entries02 = ArrayList<RadarEntry>()
+        val history = getHistory()
+
+        for (i in 0 until foods.size) {
+            labels.add(foods[i])
+            entries02.add(RadarEntry(history[i], foods[i]))
+        }
+        val radarDataSet02 = RadarDataSet(entries02, "過去の栄養バランス").apply {
+            color = Color.RED
+            fillColor = Color.RED
+            lineWidth = 3f
+            setDrawFilled(true)
+        }
+        mealsDataRadarChart02.data = RadarData(radarDataSet02).apply {
+            setLabels(labels)
+            setValueTextSize(10f)
+        }
+        mealsDataRadarChart02.xAxis.apply {
+            valueFormatter = IndexAxisValueFormatter(labels)
+            textSize = 15f
+            labelCount = 10
+            setDrawLabels(true)
+            setDrawGridLines(false)
+            setDrawAxisLine(true)
+        }
+        mealsDataRadarChart02.yAxis.apply {
+            axisMinimum = 0f
+            axisMaximum = 3f
+            setDrawLabels(false)
+        }
+        mealsDataRadarChart02.apply {
+            isRotationEnabled = false
+            description.isEnabled = false
+            legend.isEnabled = false
+        }
+        mealsDataRadarChart02.invalidate()
+    }
+
+    private fun getHistory(): ArrayList<Float> {
+        val data = arrayListOf(0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f)
+        val lines = FileManager().CsvReader(fileName = FileManager.mealsResultFileName).readLines()
+        for (i in lines.size - 5 until lines.size) {
+            val row = lines[i].split(",")
+            for (j in 0 until 10) {
+                data[j] = data[j] + row[j + 1].toFloat()
+            }
+        }
+        for (i in 0 until 10) {
+            data[i] = data[i] / 5
+        }
+        Log.d("debug", "$data")
+        return data
     }
 }

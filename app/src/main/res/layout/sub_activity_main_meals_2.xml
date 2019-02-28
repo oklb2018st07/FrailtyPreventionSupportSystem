@@ -12,10 +12,10 @@
     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
                   android:orientation="horizontal">
         <ImageView android:layout_width="80dp" android:layout_height="80dp"
-                   android:id="@+id/mealsImageView"
+                   android:id="@+id/mealsImageView01"
                    android:layout_gravity="center"/>
         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                  android:id="@+id/mealsQuestionTextView"
+                  android:id="@+id/mealsQuestionTextView01"
                   android:textSize="40sp"/>
     </LinearLayout>
 
@@ -47,7 +47,7 @@
                           android:layout_gravity="center">
                 <Button android:layout_width="wrap_content" android:layout_height="wrap_content"
                         android:text="次へ"
-                        android:id="@+id/mealsNextQuestionButton"
+                        android:id="@+id/mealsNextQuestionButton01"
                         android:textSize="40dp"/>
             </LinearLayout>
 

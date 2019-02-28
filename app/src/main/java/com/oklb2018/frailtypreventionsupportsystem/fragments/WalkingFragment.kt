@@ -1,5 +1,6 @@
 package com.oklb2018.frailtypreventionsupportsystem.fragments
 
+import android.graphics.Color
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.text.format.DateFormat
@@ -77,13 +78,26 @@ class WalkingFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         currentWalkingParameter = walkingParameters[walkingParameters.size - 1]
         setComponents()
+        stepCountUpdate()
     }
 
     private fun setComponents() {
         goalStepsTextView.text = "目標歩数 : " + currentWalkingParameter.goal
+        goalStepsTextView.setBackgroundColor(Color.CYAN)
         myStepsTextView.text = "達成歩数 : " + currentWalkingParameter.steps
-        walkingSelectButton01.setOnClickListener { _ -> mode = 1 }
-        walkingSelectButton02.setOnClickListener { _ -> mode = 2 }
+        myStepsTextView.setBackgroundColor(Color.WHITE)
+        walkingSelectButton01.setOnClickListener { _ ->
+            mode = 1
+            goalStepsTextView.setBackgroundColor(Color.CYAN)
+            myStepsTextView.setBackgroundColor(Color.WHITE)
+            stepCountUpdate()
+        }
+        walkingSelectButton02.setOnClickListener { _ ->
+            mode = 2
+            goalStepsTextView.setBackgroundColor(Color.WHITE)
+            myStepsTextView.setBackgroundColor(Color.CYAN)
+            stepCountUpdate()
+        }
         walkingInputButton00.setOnClickListener { _ ->
             stepCount = stepCount * 10 + 0
             stepCountUpdate()
@@ -137,7 +151,14 @@ class WalkingFragment : Fragment() {
     }
 
     private fun stepCountUpdate() {
-        stepCounterTextView.text = "$stepCount"
+        when (mode) {
+            1 -> {
+                stepCounterTextView.text = "目標歩数 : $stepCount"
+            }
+            2 -> {
+                stepCounterTextView.text = "達成歩数 : $stepCount"
+            }
+        }
     }
 
     private fun stepCountSave() {
@@ -145,12 +166,16 @@ class WalkingFragment : Fragment() {
             1 -> {
                 currentWalkingParameter.goal = stepCount
                 goalStepsTextView.text = "目標歩数 : " + currentWalkingParameter.goal
+                goalStepsTextView.setBackgroundColor(Color.WHITE)
+                myStepsTextView.setBackgroundColor(Color.CYAN)
                 Toast.makeText(context, "目標歩数を設定しました", Toast.LENGTH_LONG).show()
                 mode = 2
             }
             2 -> {
                 currentWalkingParameter.steps = stepCount
                 myStepsTextView.text = "達成歩数 : " + currentWalkingParameter.steps
+                goalStepsTextView.setBackgroundColor(Color.WHITE)
+                myStepsTextView.setBackgroundColor(Color.WHITE)
                 Toast.makeText(context, "今日歩いた歩数が反映されました", Toast.LENGTH_LONG).show()
             }
         }
@@ -161,6 +186,7 @@ class WalkingFragment : Fragment() {
     private fun parameterSave() {
         FileManager().CsvWriter(fileName = FileManager.walkingParameterFileName)
             .overwriteWalkingParameter(walkingParameters)
+        Toast.makeText(context, "記録完了です．お疲れ様でした！", Toast.LENGTH_LONG).show()
     }
 }
 

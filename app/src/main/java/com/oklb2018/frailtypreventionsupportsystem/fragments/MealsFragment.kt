@@ -1,22 +1,29 @@
 package com.oklb2018.frailtypreventionsupportsystem.fragments
 
+import android.graphics.Color
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.util.Log
 import android.view.ViewGroup
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.Toast
+import com.github.mikephil.charting.data.RadarData
+import com.github.mikephil.charting.data.RadarDataSet
+import com.github.mikephil.charting.data.RadarEntry
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.oklb2018.frailtypreventionsupportsystem.R
-import kotlinx.android.synthetic.main.layout_test.*
+import com.oklb2018.frailtypreventionsupportsystem.elements.FileManager
+import kotlinx.android.synthetic.main.meals_tutorial.*
 import kotlinx.android.synthetic.main.sub_activity_main_meals.*
-import kotlinx.android.synthetic.main.sub_activity_main_meals_2.*
+import kotlinx.android.synthetic.main.sub_activity_main_meals_result.*
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class MealsFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.sub_activity_main_meals_2, container, false)
+        return inflater.inflate(R.layout.meals_tutorial, container, false)
     }
 
     var answers = arrayListOf<Int>(0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
@@ -47,130 +54,117 @@ class MealsFragment : Fragment() {
         "普段，油を使った料理をどの程度食べていますか？"
     )
 
+    var foods = listOf("肉", "魚介類", "卵料理", "大豆・大豆製品", "牛乳", "緑黄色野菜", "海藻類", "いも類", "果物", "油")
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        showTutorial()
+    }
+
+    private fun showTutorial() {
+        mealsTutorialText.text = "これからあなたの食生活に関するいくつかの質問をさせていただきます．最近のあなたに当てはまる回答をタッチしてください．"
+        mealsTutorialFinishButton.setOnClickListener { _ ->
+            start()
+        }
+    }
+
+    private fun start() {
+        mealsTutorialFragmentParent.removeAllViews()
+        layoutInflater.inflate(R.layout.sub_activity_main_meals, mealsTutorialFragmentParent)
         mealsQuestionTextView.text = questions[cnt]
         mealsImageView.setImageResource(images[cnt])
-        radioGroup10.setOnCheckedChangeListener { group, checkedId ->
-            when (checkedId) {
-                R.id.radioButton1 -> answers[cnt] = 0
-                R.id.radioButton2 -> answers[cnt] = 1
-                R.id.radioButton3 -> answers[cnt] = 2
-                R.id.radioButton4 -> answers[cnt] = 3
-                else -> Log.d("debug", "this id: [$checkedId] is not in the RadioGroup")
-            }
+        mealsResponseButton00.setOnClickListener { respond(0) }
+        mealsResponseButton01.setOnClickListener { respond(1) }
+        mealsResponseButton02.setOnClickListener { respond(2) }
+        mealsResponseButton03.setOnClickListener { respond(3) }
+        mealsNextQuestionButton.setOnClickListener { questionUpdate(false) }
+    }
+
+    private fun respond(id: Int) {
+        answers[cnt] = id
+        if (cnt == questions.size - 1) {
+            finish()
+            return
         }
-        mealsNextQuestionButton.setOnClickListener {
-            radioGroup10.clearCheck()
-            if (cnt == 9) {
-                finish()
-                return@setOnClickListener
-            }
-            cnt++
-            mealsQuestionTextView.text = questions[cnt]
-            mealsImageView.setImageResource(images[cnt])
-        }
+        questionUpdate(true)
+    }
+
+    private fun questionUpdate(next: Boolean) {
+        if (next) cnt++ else cnt--
+        if (cnt < 0) cnt = 0
+        mealsQuestionTextView.text = questions[cnt]
+        mealsImageView.setImageResource(images[cnt])
     }
 
     private fun finish() {
-        Toast.makeText(activity, "${answers.toString()}", Toast.LENGTH_LONG).show()
+        FileManager().CsvWriter(fileName = FileManager.mealsResultFileName).writeMealsData(Calendar.getInstance(), answers)
+        mealsFragmentParent.removeAllViews()
+        layoutInflater.inflate(R.layout.sub_activity_main_meals_result, mealsFragmentParent)
+        showMealsRadarChart()
     }
 
-    private fun setRadioButtons() {
-        radioGroup00.setOnCheckedChangeListener { group, checkedId ->
-            when (checkedId) {
-                R.id.radioButton00 -> answers[0] = 0
-                R.id.radioButton01 -> answers[0] = 1
-                R.id.radioButton02 -> answers[0] = 2
-                R.id.radioButton03 -> answers[0] = 3
-                else -> Log.d("debug", "this id: [$checkedId] is not in the RadioGroup")
-            }
-        }
-        radioGroup01.setOnCheckedChangeListener { group, checkedId ->
-            when (checkedId) {
-                R.id.radioButton10 -> answers[1] = 0
-                R.id.radioButton11 -> answers[1] = 1
-                R.id.radioButton12 -> answers[1] = 2
-                R.id.radioButton13 -> answers[1] = 3
-                else -> Log.d("debug", "this id: [$checkedId] is not in the RadioGroup")
-            }
-        }
-        radioGroup02.setOnCheckedChangeListener { group, checkedId ->
-            when (checkedId) {
-                R.id.radioButton20 -> answers[2] = 0
-                R.id.radioButton21 -> answers[2] = 1
-                R.id.radioButton22 -> answers[2] = 2
-                R.id.radioButton23 -> answers[2] = 3
-                else -> Log.d("debug", "this id: [$checkedId] is not in the RadioGroup")
-            }
-        }
-        radioGroup03.setOnCheckedChangeListener { group, checkedId ->
-            when (checkedId) {
-                R.id.radioButton30 -> answers[3] = 0
-                R.id.radioButton31 -> answers[3] = 1
-                R.id.radioButton32 -> answers[3] = 2
-                R.id.radioButton33 -> answers[3] = 3
-                else -> Log.d("debug", "this id: [$checkedId] is not in the RadioGroup")
-            }
-        }
-        radioGroup04.setOnCheckedChangeListener { group, checkedId ->
-            when (checkedId) {
-                R.id.radioButton40 -> answers[4] = 0
-                R.id.radioButton41 -> answers[4] = 1
-                R.id.radioButton42 -> answers[4] = 2
-                R.id.radioButton43 -> answers[4] = 3
-                else -> Log.d("debug", "this id: [$checkedId] is not in the RadioGroup")
-            }
-        }
-        radioGroup05.setOnCheckedChangeListener { group, checkedId ->
-            when (checkedId) {
-                R.id.radioButton50 -> answers[5] = 0
-                R.id.radioButton51 -> answers[5] = 1
-                R.id.radioButton52 -> answers[5] = 2
-                R.id.radioButton53 -> answers[5] = 3
-                else -> Log.d("debug", "this id: [$checkedId] is not in the RadioGroup")
-            }
-        }
-        radioGroup06.setOnCheckedChangeListener { group, checkedId ->
-            when (checkedId) {
-                R.id.radioButton60 -> answers[6] = 0
-                R.id.radioButton61 -> answers[6] = 1
-                R.id.radioButton62 -> answers[6] = 2
-                R.id.radioButton63 -> answers[6] = 3
-                else -> Log.d("debug", "this id: [$checkedId] is not in the RadioGroup")
-            }
-        }
-        radioGroup07.setOnCheckedChangeListener { group, checkedId ->
-            when (checkedId) {
-                R.id.radioButton70 -> answers[7] = 0
-                R.id.radioButton71 -> answers[7] = 1
-                R.id.radioButton72 -> answers[7] = 2
-                R.id.radioButton73 -> answers[7] = 3
-                else -> Log.d("debug", "this id: [$checkedId] is not in the RadioGroup")
-            }
-        }
-        radioGroup08.setOnCheckedChangeListener { group, checkedId ->
-            when (checkedId) {
-                R.id.radioButton80 -> answers[8] = 0
-                R.id.radioButton81 -> answers[8] = 1
-                R.id.radioButton82 -> answers[8] = 2
-                R.id.radioButton83 -> answers[8] = 3
-                else -> Log.d("debug", "this id: [$checkedId] is not in the RadioGroup")
-            }
-        }
-        radioGroup09.setOnCheckedChangeListener { group, checkedId ->
-            when (checkedId) {
-                R.id.radioButton90 -> answers[9] = 0
-                R.id.radioButton91 -> answers[9] = 1
-                R.id.radioButton92 -> answers[9] = 2
-                R.id.radioButton93 -> answers[9] = 3
-                else -> Log.d("debug", "this id: [$checkedId] is not in the RadioGroup")
-            }
+    private fun showMealsRadarChart() {
+        val labels = ArrayList<String>()
+        val entries01 = ArrayList<RadarEntry>()
+        val entries02 = ArrayList<RadarEntry>()
+        val history = getHistory()
+
+        for (i in 0 until foods.size) {
+            labels.add(foods[i])
+            entries01.add(RadarEntry(answers[i].toFloat(), foods[i]))
+            entries02.add(RadarEntry(history[i], foods[i]))
         }
 
-        mealsDataInputFinishButton.setOnClickListener {
-            Log.d("debug", "${answers.toString()}")
-            Toast.makeText(activity, "${answers.toString()}", Toast.LENGTH_LONG).show()
+        val radarDataSet01 = RadarDataSet(entries01, "今の栄養バランス").apply {
+            color = Color.BLUE
+            fillColor = Color.BLUE
+            lineWidth = 3f
+            setDrawFilled(true)
         }
+        val radarDataSet02 = RadarDataSet(entries02, "過去の栄養バランス").apply {
+            color = Color.RED
+            fillColor = Color.RED
+            lineWidth = 3f
+            setDrawFilled(true)
+        }
+        mealsDataRadarChart01.data = RadarData(radarDataSet02, radarDataSet01).apply {
+            setLabels(labels)
+            setValueTextSize(10f)
+        }
+        mealsDataRadarChart01.xAxis.apply {
+            valueFormatter = IndexAxisValueFormatter(labels)
+            textSize = 15f
+            labelCount = 10
+            setDrawLabels(true)
+            setDrawGridLines(false)
+            setDrawAxisLine(true)
+        }
+        mealsDataRadarChart01.yAxis.apply {
+            axisMinimum = 0f
+            axisMaximum = 3f
+            setDrawLabels(false)
+        }
+        mealsDataRadarChart01.apply {
+            isRotationEnabled = false
+            description.isEnabled = false
+            legend.isEnabled = false
+        }
+        mealsDataRadarChart01.invalidate()
+    }
+
+    private fun getHistory(): ArrayList<Float> {
+        val data = arrayListOf(0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f)
+        val lines = FileManager().CsvReader(fileName = FileManager.mealsResultFileName).readLines()
+        for (i in lines.size - 5 until lines.size) {
+            val row = lines[i].split(",")
+            for (j in 0 until 10) {
+                data[j] = data[j] + row[j + 1].toFloat()
+            }
+        }
+        for (i in 0 until 10) {
+            data[i] = data[i] / 5
+        }
+        Log.d("debug", "$data")
+        return data
     }
 }

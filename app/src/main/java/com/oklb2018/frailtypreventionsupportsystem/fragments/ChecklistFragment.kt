@@ -22,25 +22,39 @@ class ChecklistFragment : Fragment() {
      */
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        setCheckList()
+        //setCheckList()
+        showTutorial()
+    }
+
+    private fun showTutorial() {
+        checklistQuestionText.text = "これからフレイルに関するいくつかの質問をさせていただきます．「はい」「いいえ」のどちらか自分に当てはまる方をタッチしてください．"
+        checklistButton01.setOnClickListener { _ ->
+            run {
+                checklistButton01.text = "はい"
+                checklistButton02.visibility = View.VISIBLE
+                setCheckList()
+            }
+        }
+        checklistButton01.text = "はじめる"
+        checklistButton02.visibility = View.INVISIBLE
     }
 
     private val questions = listOf(
-        "一日中家の外には出ず，家の中で過ごすことが多いですか。",
-        "2～3日に1回以上，仕事，買い物，散歩，通院などで外出しますか。",
-        "家の中あるいは家の外で，趣味・楽しみ・好きでやっていることがありますか。",
-        "親しくお話ができる近所の人はいますか。",
-        "近所の人以外で，親しく行き来するような友達，別居家族または親戚はいますか。",
-        "この一年間に転んだことがありますか。",
-        "1 km ぐらいの距離を，不自由なく続けて歩くことができますか。",
-        "本が読める程度に，目は普通に見えますか。眼鏡を使った状態でも構いません。",
-        "家の中でよくつまずいたり，滑ったりしますか。",
-        "転ぶことが怖くて外出を控えることがありますか。",
-        "この一年間に入院したことがありますか。",
-        "最近食欲はありますか。",
-        "現在，たくあん程度のかたさの食べ物が噛めますか。",
-        "この 6 か月間に 3 kg 以上の体重減少がありましたか。",
-        "この 6 か月間に，以前に比べてからだの筋肉や脂肪が落ちてきたと思いますか。"
+        "一日中家の外には出ず\n家の中で過ごすことが多いですか",
+        "2～3日に1回以上，\n仕事，買い物，散歩，\n通院などで外出しますか",
+        "家の中や家の外で，\n趣味・楽しみ・好きで\nやっていることがありますか",
+        "親しくお話ができる\n近所の人はいますか",
+        "近所の人以外で，\n親しく行き来するような友達，別居家族または親戚はいますか",
+        "この一年間に転んだ\nことがありますか",
+        "1 km ぐらいの距離を，\n不自由なく続けて歩くことができますか",
+        "本が読める程度に\n目は普通に見えますか\n眼鏡を使った状態でも構いません",
+        "家の中でよくつまずいたり，滑ったりしますか",
+        "転ぶことが怖くて外出を控えることがありますか",
+        "この一年間に入院したことがありますか",
+        "最近食欲はありますか",
+        "たくあん程度のかたさの食べ物が噛めますか",
+        "この 6 か月間に\n3 kg 以上の体重減少がありましたか",
+        "この 6 か月間に\n以前に比べてからだの筋肉や脂肪が落ちてきたと思いますか"
     )
 
     private val answers = arrayListOf<Boolean>()
@@ -80,9 +94,9 @@ class ChecklistFragment : Fragment() {
         checklistParent.removeAllViews()
         layoutInflater.inflate(R.layout.checklist_result, checklistParent)
         var string: String = ""
-        string += "Your Score : $cnt \n"
+        //string += "Your Score : $cnt \n"
         string += if (cnt >= 3) "あなたはフレイルまたはフレイル予備軍である可能性があります．\n"
-        else "フレイルの可能性は低いでしょう．\n"
+        else "あなたがフレイルである可能性は低いでしょう．\n"
         checklistResultText.text = string
     }
 }

@@ -2,7 +2,7 @@
 <resources>
     <dimen name="width50">50dp</dimen>
     <dimen name="width60">60dp</dimen>
-    <dimen name="width0">50dp</dimen>
+    <dimen name="width0">0dp</dimen>
     <dimen name="height50">50dp</dimen>
     <dimen name="height40">40dp</dimen>
 </resources>

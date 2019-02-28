@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".fragments.IdeaCommunicationFragment"
+        android:orientation="vertical"
+        android:paddingLeft="0dp"
+        android:paddingRight="0dp"
+        android:background="@color/background_neutral"
+        android:gravity="center">
+
+    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+              android:layout_gravity="center"
+              android:textSize="50sp"
+              android:textColor="#000000"
+              android:id="@+id/iDeaFlipTextView01"/>
+
+    <Button android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="次のテーマ"
+            android:textSize="50sp"
+            android:id="@+id/nextIdeaFlipButton"/>
+
+
+</LinearLayout>

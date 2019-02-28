@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.BitmapFactory
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,7 +19,11 @@ import kotlinx.android.synthetic.main.activity_main.*
  */
 class MainActivity : AppCompatActivity(), OnReadyListener, OnReturnListener {
 
-    private val titles = listOf("問診", "ウォーキング", "食事", "脳トレ", "データ確認", "健康推進事業を探す", "トレイルメイキングテスト")
+    private val titles = listOf(
+        "フレイル\nチェック", "ウォーキング", "食事の記録", "頭の体操",
+        "データ確認", "健康支援事業を探す", "トレイルメイキングテスト", "コイン取り\nゲーム", "単語作り\nゲーム",
+        "共想法で\n話そう！"
+    )
 
     /**
      * 下記より拝借
@@ -27,8 +32,9 @@ class MainActivity : AppCompatActivity(), OnReadyListener, OnReturnListener {
     private val images = listOf(
         R.drawable.icon01, R.drawable.icon02, R.drawable.icon03,
         R.drawable.icon04, R.drawable.icon05, R.drawable.icon06,
-        R.drawable.icon07
-    )
+        R.drawable.icon07, R.drawable.icon08, R.drawable.icon09,
+        R.drawable.icon10
+        )
 
     private val menus = List(titles.size) { i -> MenuListData(titles[i], images[i]) }
 
@@ -47,8 +53,9 @@ class MainActivity : AppCompatActivity(), OnReadyListener, OnReturnListener {
 
         listView1.setOnItemClickListener { parent, view, pos, id ->
             run {
+                Log.d("debug", "pos: $pos, id: $id")
                 for (v in parent.touchables) v.setBackgroundResource(R.drawable.colored_rectangler_00)
-                parent.getChildAt(pos).setBackgroundResource(R.drawable.colored_rectangler_01)
+                view.setBackgroundResource(R.drawable.colored_rectangler_01)
                 when (id) {
                     0L -> {
                         menuTranslateEnlargement()
@@ -92,6 +99,24 @@ class MainActivity : AppCompatActivity(), OnReadyListener, OnReturnListener {
                         fragmentTransaction.replace(R.id.subContentArea, TMTFragment())
                         fragmentTransaction.commit()
                     }
+                    7L -> {
+                        menuTranslateReduction()
+                        val fragmentTransaction = supportFragmentManager.beginTransaction()
+                        fragmentTransaction.replace(R.id.subContentArea, GridGameFragment())
+                        fragmentTransaction.commit()
+                    }
+                    8L -> {
+                        menuTranslateReduction()
+                        val fragmentTransaction = supportFragmentManager.beginTransaction()
+                        fragmentTransaction.replace(R.id.subContentArea, GridWordGameFragment())
+                        fragmentTransaction.commit()
+                    }
+                    9L -> {
+                        menuTranslateReduction()
+                        val fragmentTransaction = supportFragmentManager.beginTransaction()
+                        fragmentTransaction.replace(R.id.subContentArea, IdeaCommunicationFragment())
+                        fragmentTransaction.commit()
+                    }
                     else -> {
                     }
                 }
@@ -103,9 +128,11 @@ class MainActivity : AppCompatActivity(), OnReadyListener, OnReturnListener {
         FileManager().makeFiles()
         FileManager().initFiles()
 
+        Log.d("debug", FileManager().CsvReader(fileName = FileManager.mealsResultFileName).read())
+
         WalkingFragment.readWalkingParameters()
         BrainTrainingFragment.readBrainTrainingParameters()
-
+        FileManager().initWalkingParameter()
     }
 
     override fun onReady(skinId: Int, difficulty: Int) {
@@ -127,16 +154,28 @@ class MainActivity : AppCompatActivity(), OnReadyListener, OnReturnListener {
 
     private fun menuTranslateEnlargement() {
         if (isMenuListActive) return else isMenuListActive = true
-        val param01 = LinearLayout.LayoutParams(resources.getDimensionPixelSize(R.dimen.width0), LinearLayout.LayoutParams.WRAP_CONTENT, 5f)
-        val param02 = LinearLayout.LayoutParams(resources.getDimensionPixelSize(R.dimen.width0), LinearLayout.LayoutParams.MATCH_PARENT, 10f)
+        val param01 = LinearLayout.LayoutParams(
+            resources.getDimensionPixelSize(R.dimen.width0),
+            LinearLayout.LayoutParams.WRAP_CONTENT,
+            5f
+        )
+        val param02 = LinearLayout.LayoutParams(
+            resources.getDimensionPixelSize(R.dimen.width0),
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            10f
+        )
         space02.layoutParams = param01
         subContentArea.layoutParams = param02
     }
 
     private fun menuTranslateReduction() {
         if (!isMenuListActive) return else isMenuListActive = false
-        val param01 = LinearLayout.LayoutParams(resources.getDimensionPixelSize(R.dimen.width60), LinearLayout.LayoutParams.WRAP_CONTENT)
-        val param02 = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT)
+        val param01 = LinearLayout.LayoutParams(
+            resources.getDimensionPixelSize(R.dimen.width60),
+            LinearLayout.LayoutParams.WRAP_CONTENT
+        )
+        val param02 =
+            LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT)
         space02.layoutParams = param01
         subContentArea.layoutParams = param02
     }

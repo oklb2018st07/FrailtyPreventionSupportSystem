@@ -5,9 +5,11 @@ import android.app.Activity
 import android.content.pm.PackageManager
 import android.os.Environment
 import android.support.v4.app.ActivityCompat
+import android.text.format.DateFormat
 import android.util.Log
 import android.widget.Toast
 import com.oklb2018.frailtypreventionsupportsystem.fragments.BrainTrainingParameter
+import com.oklb2018.frailtypreventionsupportsystem.fragments.WalkingFragment
 import com.oklb2018.frailtypreventionsupportsystem.fragments.WalkingParameter
 import java.io.*
 import java.lang.StringBuilder
@@ -27,14 +29,14 @@ public class FileManager {
         public val APP_DATE_FORMAT: String = "yyyy-MM-dd"
         public val APP_DATE_AND_TIME_FORMAT: String = "yyyy-MM-dd-HH-mm-ss"
 
-        public val walkingParameterFileName: String = "walkingStates.csv"
-        public val checkListResultFileName: String = "checkListResult.csv"
-        public val mealsResultFileName: String = "mealsResult.csv"
-        public val brainTrainingResultFileName: String = "brainTrainingResult.csv"
+        public val walkingParameterFileName: String = "walkingStates01.csv"
+        public val checkListResultFileName: String = "checkListResult01.csv"
+        public val mealsResultFileName: String = "mealsResult01.csv"
+        public val brainTrainingResultFileName: String = "brainTrainingResult01.csv"
 
         public val walkingParameterFileHeader: String = "startCalendar,goal,result"
         public val checkListResultFileHeader: String = "startCalendar,Q1,Q2,Q3,Q4,Q5,Q6,Q7,Q8,Q9,Q10,Q11,Q12,Q13,Q14,Q15,score"
-        public val mealsResultFileHeader: String = "startCalendar,Q1,Q2,Q3,Q4,Q5,Q6,Q7,Q8,Q9,Q10,score"
+        public val mealsResultFileHeader: String = "startCalendar,Q1,Q2,Q3,Q4,Q5,Q6,Q7,Q8,Q9,Q10"
         public val brainTrainingResultFileHeader: String = "startCalendar,finishCalender,skin,difficulty,retry,total,blank,correct,location,questions,answers"
     }
 
@@ -57,31 +59,46 @@ public class FileManager {
             CsvWriter(fileName = checkListResultFileName).write(checkListResultFileHeader)
         }
         if (!mealsResultFile.exists()) {
-            CsvWriter(fileName = mealsResultFileName).write(mealsResultFileHeader)
+            initMealsData()
         }
         if (!brainTrainingResultFile.exists()) {
-            CsvWriter(fileName = brainTrainingResultFileName).write(brainTrainingResultFileHeader)
+            initBrainTrainingParameter()
+            //CsvWriter(fileName = brainTrainingResultFileName).write(brainTrainingResultFileHeader)
         }
     }
 
-    public fun initFiles() {
-        /*
-        CsvWriter(fileName = walkingParameterFileName).overwrite(walkingParameterFileHeader)
-        CsvWriter(fileName = walkingParameterFileName).write("2018-12-01,1700,2000")
-        CsvWriter(fileName = walkingParameterFileName).write("2018-12-02,1500,2200")
-        CsvWriter(fileName = walkingParameterFileName).write("2018-12-03,1800,5000")
-        */
-        CsvWriter(fileName = checkListResultFileName).overwrite(checkListResultFileHeader)
+    public fun initWalkingParameter() {
+        val r = Random()
+        for (i in 0 until WalkingFragment.walkingParameters.size - 1) {
+            val p = WalkingFragment.walkingParameters[i]
+            if (p.steps == 0 && p.goal == 0) {
+                val s = r.nextInt(2000 + 15000)
+                p.goal = s
+                p.steps = s + r.nextInt(10000)
+            }
+        }
+        CsvWriter(fileName = FileManager.walkingParameterFileName)
+            .overwriteWalkingParameter(WalkingFragment.walkingParameters)
+    }
 
-        CsvWriter(fileName = mealsResultFileName).overwrite(mealsResultFileHeader)
-
+    public fun initBrainTrainingParameter() {
         CsvWriter(fileName = brainTrainingResultFileName).overwrite(brainTrainingResultFileHeader)
-        /*
         CsvWriter(fileName = brainTrainingResultFileName).write("2018-12-23-16-50-25,2018-12-23-16-51-45,2,4,0,8,4,4,30222222EEEE,011001100000,30222222EEEE")
         CsvWriter(fileName = brainTrainingResultFileName).write("2018-12-26-16-52-25,2018-12-26-16-53-12,2,4,0,8,4,4,30222222EEEE,011001100000,30222222EEEE")
         CsvWriter(fileName = brainTrainingResultFileName).write("2018-12-26-16-54-25,2018-12-26-16-54-32,2,4,0,8,4,4,30222222EEEE,011001100000,30222222EEEE")
-        */
+    }
 
+    public fun initFiles() {
+        CsvWriter(fileName = checkListResultFileName).overwrite(checkListResultFileHeader)
+    }
+
+    public fun initMealsData() {
+        CsvWriter(fileName = mealsResultFileName).overwrite(mealsResultFileHeader)
+        CsvWriter(fileName = mealsResultFileName).write("2019-01-01-21-19-40,1,2,1,2,3,2,2,2,0,2")
+        CsvWriter(fileName = mealsResultFileName).write("2019-01-03-21-19-40,2,0,0,2,2,1,2,0,2,2")
+        CsvWriter(fileName = mealsResultFileName).write("2019-01-07-21-19-40,2,2,2,2,3,2,2,2,1,1")
+        CsvWriter(fileName = mealsResultFileName).write("2019-01-10-21-19-40,2,1,3,2,2,3,2,1,2,1")
+        CsvWriter(fileName = mealsResultFileName).write("2019-01-11-21-19-40,3,2,3,2,2,3,2,2,2,2")
     }
 
     public inner class CsvReader(filePath: String = appPath, fileName: String = "") {
@@ -191,6 +208,18 @@ public class FileManager {
                 bufferedWriter.write(p.toString() + "\n")
             }
             bufferedWriter.flush()
+        }
+
+        public fun writeMealsData(calendar: Calendar, answers: ArrayList<Int>) {
+            val fileOutputStream: FileOutputStream = FileOutputStream(file, true)
+            val outputStreamWriter: OutputStreamWriter = OutputStreamWriter(fileOutputStream, "UTF-8")
+            val bufferedWriter: BufferedWriter = BufferedWriter(outputStreamWriter)
+            bufferedWriter.write("\n" + DateFormat.format(FileManager.APP_DATE_AND_TIME_FORMAT, calendar).toString())
+            for (p in answers) {
+                bufferedWriter.write("," + p.toString())
+            }
+            bufferedWriter.flush()
+            Log.d("debug", "Write extra data")
         }
     }
 

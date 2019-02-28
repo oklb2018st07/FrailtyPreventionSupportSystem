@@ -163,9 +163,10 @@ class BrainTrainingFragment : Fragment(), SelectAnswerDialog.Companion.OnSelectL
         location = ArrayList<Int>()
         questions = arrayListOf(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
         answers = ArrayList<Int>()
+        val r = Random()
         for (i in 0 until 12) {
             if (i < totals[difficulty]) {
-                location.add(Random().nextInt(4))
+                location.add(r.nextInt(4))
             } else {
                 location.add(-1)
             }
@@ -393,7 +394,7 @@ class ImageSkin {
             )
         )
 
-        public val titles = listOf("幾何学模様", "花々", "おにぎり", "おむすび")
+        public val titles = listOf("図形", "花々", "おにぎり", "おむすび")
 
         public var images = allImageList[0]
 

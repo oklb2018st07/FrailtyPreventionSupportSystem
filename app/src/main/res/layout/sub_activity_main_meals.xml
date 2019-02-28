@@ -7,274 +7,51 @@
         tools:context=".fragments.MealsFragment"
         android:orientation="vertical"
         android:paddingLeft="0dp"
-        android:paddingRight="0dp">
+        android:paddingRight="0dp"
+        android:id="@+id/mealsFragmentParent">
+
+    <Space android:layout_width="match_parent" android:layout_height="10dp"/>
 
     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
                   android:orientation="horizontal">
-        <TextView android:layout_width="0dp" android:layout_height="wrap_content"
-                  android:text=""
-                  android:layout_weight="1"/>
-        <TextView android:layout_width="0dp" android:layout_height="wrap_content"
-                  android:text="ほぼ毎日食べる"
-                  android:layout_weight="1"/>
-        <TextView android:layout_width="0dp" android:layout_height="wrap_content"
-                  android:text="2日に1回食べる"
-                  android:layout_weight="1"/>
-        <TextView android:layout_width="0dp" android:layout_height="wrap_content"
-                  android:text="週に1，2回食べる"
-                  android:layout_weight="1"/>
-        <TextView android:layout_width="0dp" android:layout_height="wrap_content"
-                  android:text="ほとんど食べない"
-                  android:layout_weight="1"/>
+        <ImageView android:layout_width="80dp" android:layout_height="80dp"
+                   android:id="@+id/mealsImageView"
+                   android:layout_gravity="center"/>
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                  android:id="@+id/mealsQuestionTextView"
+                  android:textColor="#000000"
+                  android:textSize="40sp"/>
     </LinearLayout>
 
     <ScrollView android:layout_width="match_parent" android:layout_height="match_parent">
         <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
                       android:orientation="vertical">
-            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-                          android:orientation="horizontal">
-                <TextView android:layout_width="0dp" android:layout_height="wrap_content"
-                          android:text="肉"
-                          android:layout_weight="1"/>
-                <RadioGroup android:layout_width="0dp" android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:layout_weight="4"
-                            android:id="@+id/radioGroup00">
-                    <RadioButton android:layout_width="0dp" android:layout_height="wrap_content"
-                                 android:id="@+id/radioButton03"
-                                 android:layout_weight="1"/>
-                    <RadioButton android:layout_width="0dp" android:layout_height="wrap_content"
-                                 android:id="@+id/radioButton02"
-                                 android:layout_weight="1"/>
-                    <RadioButton android:layout_width="0dp" android:layout_height="wrap_content"
-                                 android:id="@+id/radioButton01"
-                                 android:layout_weight="1"/>
-                    <RadioButton android:layout_width="0dp" android:layout_height="wrap_content"
-                                 android:id="@+id/radioButton00"
-                                 android:layout_weight="1"/>
-                </RadioGroup>
-            </LinearLayout>
-
-            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-                          android:orientation="horizontal">
-                <TextView android:layout_width="0dp" android:layout_height="wrap_content"
-                          android:text="魚介類"
-                          android:layout_weight="1"/>
-                <RadioGroup android:layout_width="0dp" android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:layout_weight="4"
-                            android:id="@+id/radioGroup01">
-                    <RadioButton android:layout_width="0dp" android:layout_height="wrap_content"
-                                 android:id="@+id/radioButton13"
-                                 android:layout_weight="1"/>
-                    <RadioButton android:layout_width="0dp" android:layout_height="wrap_content"
-                                 android:id="@+id/radioButton12"
-                                 android:layout_weight="1"/>
-                    <RadioButton android:layout_width="0dp" android:layout_height="wrap_content"
-                                 android:id="@+id/radioButton11"
-                                 android:layout_weight="1"/>
-                    <RadioButton android:layout_width="0dp" android:layout_height="wrap_content"
-                                 android:id="@+id/radioButton10"
-                                 android:layout_weight="1"/>
-                </RadioGroup>
-            </LinearLayout>
-
-            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-                          android:orientation="horizontal">
-                <TextView android:layout_width="0dp" android:layout_height="wrap_content"
-                          android:text="卵"
-                          android:layout_weight="1"/>
-                <RadioGroup android:layout_width="0dp" android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:layout_weight="4"
-                            android:id="@+id/radioGroup02">
-                    <RadioButton android:layout_width="0dp" android:layout_height="wrap_content"
-                                 android:id="@+id/radioButton23"
-                                 android:layout_weight="1"/>
-                    <RadioButton android:layout_width="0dp" android:layout_height="wrap_content"
-                                 android:id="@+id/radioButton22"
-                                 android:layout_weight="1"/>
-                    <RadioButton android:layout_width="0dp" android:layout_height="wrap_content"
-                                 android:id="@+id/radioButton21"
-                                 android:layout_weight="1"/>
-                    <RadioButton android:layout_width="0dp" android:layout_height="wrap_content"
-                                 android:id="@+id/radioButton20"
-                                 android:layout_weight="1"/>
-                </RadioGroup>
-            </LinearLayout>
-
-            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-                          android:orientation="horizontal">
-                <TextView android:layout_width="0dp" android:layout_height="wrap_content"
-                          android:text="大豆，大豆製品"
-                          android:layout_weight="1"/>
-                <RadioGroup android:layout_width="0dp" android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:layout_weight="4"
-                            android:id="@+id/radioGroup03">
-                    <RadioButton android:layout_width="0dp" android:layout_height="wrap_content"
-                                 android:id="@+id/radioButton33"
-                                 android:layout_weight="1"/>
-                    <RadioButton android:layout_width="0dp" android:layout_height="wrap_content"
-                                 android:id="@+id/radioButton32"
-                                 android:layout_weight="1"/>
-                    <RadioButton android:layout_width="0dp" android:layout_height="wrap_content"
-                                 android:id="@+id/radioButton31"
-                                 android:layout_weight="1"/>
-                    <RadioButton android:layout_width="0dp" android:layout_height="wrap_content"
-                                 android:id="@+id/radioButton30"
-                                 android:layout_weight="1"/>
-                </RadioGroup>
-            </LinearLayout>
-
-            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-                          android:orientation="horizontal">
-                <TextView android:layout_width="0dp" android:layout_height="wrap_content"
-                          android:text="牛乳"
-                          android:layout_weight="1"/>
-                <RadioGroup android:layout_width="0dp" android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:layout_weight="4"
-                            android:id="@+id/radioGroup04">
-                    <RadioButton android:layout_width="0dp" android:layout_height="wrap_content"
-                                 android:id="@+id/radioButton43"
-                                 android:layout_weight="1"/>
-                    <RadioButton android:layout_width="0dp" android:layout_height="wrap_content"
-                                 android:id="@+id/radioButton42"
-                                 android:layout_weight="1"/>
-                    <RadioButton android:layout_width="0dp" android:layout_height="wrap_content"
-                                 android:id="@+id/radioButton41"
-                                 android:layout_weight="1"/>
-                    <RadioButton android:layout_width="0dp" android:layout_height="wrap_content"
-                                 android:id="@+id/radioButton40"
-                                 android:layout_weight="1"/>
-                </RadioGroup>
-            </LinearLayout>
-
-            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-                          android:orientation="horizontal">
-                <TextView android:layout_width="0dp" android:layout_height="wrap_content"
-                          android:text="緑黄色野菜"
-                          android:layout_weight="1"/>
-                <RadioGroup android:layout_width="0dp" android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:layout_weight="4"
-                            android:id="@+id/radioGroup05">
-                    <RadioButton android:layout_width="0dp" android:layout_height="wrap_content"
-                                 android:id="@+id/radioButton53"
-                                 android:layout_weight="1"/>
-                    <RadioButton android:layout_width="0dp" android:layout_height="wrap_content"
-                                 android:id="@+id/radioButton52"
-                                 android:layout_weight="1"/>
-                    <RadioButton android:layout_width="0dp" android:layout_height="wrap_content"
-                                 android:id="@+id/radioButton51"
-                                 android:layout_weight="1"/>
-                    <RadioButton android:layout_width="0dp" android:layout_height="wrap_content"
-                                 android:id="@+id/radioButton50"
-                                 android:layout_weight="1"/>
-                </RadioGroup>
-            </LinearLayout>
-
-            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-                          android:orientation="horizontal">
-                <TextView android:layout_width="0dp" android:layout_height="wrap_content"
-                          android:text="海藻類"
-                          android:layout_weight="1"/>
-                <RadioGroup android:layout_width="0dp" android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:layout_weight="4"
-                            android:id="@+id/radioGroup06">
-                    <RadioButton android:layout_width="0dp" android:layout_height="wrap_content"
-                                 android:id="@+id/radioButton63"
-                                 android:layout_weight="1"/>
-                    <RadioButton android:layout_width="0dp" android:layout_height="wrap_content"
-                                 android:id="@+id/radioButton62"
-                                 android:layout_weight="1"/>
-                    <RadioButton android:layout_width="0dp" android:layout_height="wrap_content"
-                                 android:id="@+id/radioButton61"
-                                 android:layout_weight="1"/>
-                    <RadioButton android:layout_width="0dp" android:layout_height="wrap_content"
-                                 android:id="@+id/radioButton60"
-                                 android:layout_weight="1"/>
-                </RadioGroup>
-            </LinearLayout>
-
-            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-                          android:orientation="horizontal">
-                <TextView android:layout_width="0dp" android:layout_height="wrap_content"
-                          android:text="いも"
-                          android:layout_weight="1"/>
-                <RadioGroup android:layout_width="0dp" android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:layout_weight="4"
-                            android:id="@+id/radioGroup07">
-                    <RadioButton android:layout_width="0dp" android:layout_height="wrap_content"
-                                 android:id="@+id/radioButton73"
-                                 android:layout_weight="1"/>
-                    <RadioButton android:layout_width="0dp" android:layout_height="wrap_content"
-                                 android:id="@+id/radioButton72"
-                                 android:layout_weight="1"/>
-                    <RadioButton android:layout_width="0dp" android:layout_height="wrap_content"
-                                 android:id="@+id/radioButton71"
-                                 android:layout_weight="1"/>
-                    <RadioButton android:layout_width="0dp" android:layout_height="wrap_content"
-                                 android:id="@+id/radioButton70"
-                                 android:layout_weight="1"/>
-                </RadioGroup>
-            </LinearLayout>
-
-            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-                          android:orientation="horizontal">
-                <TextView android:layout_width="0dp" android:layout_height="wrap_content"
-                          android:text="果物"
-                          android:layout_weight="1"/>
-                <RadioGroup android:layout_width="0dp" android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:layout_weight="4"
-                            android:id="@+id/radioGroup08">
-                    <RadioButton android:layout_width="0dp" android:layout_height="wrap_content"
-                                 android:id="@+id/radioButton83"
-                                 android:layout_weight="1"/>
-                    <RadioButton android:layout_width="0dp" android:layout_height="wrap_content"
-                                 android:id="@+id/radioButton82"
-                                 android:layout_weight="1"/>
-                    <RadioButton android:layout_width="0dp" android:layout_height="wrap_content"
-                                 android:id="@+id/radioButton81"
-                                 android:layout_weight="1"/>
-                    <RadioButton android:layout_width="0dp" android:layout_height="wrap_content"
-                                 android:id="@+id/radioButton80"
-                                 android:layout_weight="1"/>
-                </RadioGroup>
-            </LinearLayout>
-
-            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-                          android:orientation="horizontal">
-                <TextView android:layout_width="0dp" android:layout_height="wrap_content"
-                          android:text="油を使った料理"
-                          android:layout_weight="1"/>
-                <RadioGroup android:layout_width="0dp" android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:layout_weight="4"
-                            android:id="@+id/radioGroup09">
-                    <RadioButton android:layout_width="0dp" android:layout_height="wrap_content"
-                                 android:id="@+id/radioButton93"
-                                 android:layout_weight="1"/>
-                    <RadioButton android:layout_width="0dp" android:layout_height="wrap_content"
-                                 android:id="@+id/radioButton92"
-                                 android:layout_weight="1"/>
-                    <RadioButton android:layout_width="0dp" android:layout_height="wrap_content"
-                                 android:id="@+id/radioButton91"
-                                 android:layout_weight="1"/>
-                    <RadioButton android:layout_width="0dp" android:layout_height="wrap_content"
-                                 android:id="@+id/radioButton90"
-                                 android:layout_weight="1"/>
-                </RadioGroup>
-            </LinearLayout>
-
             <Button android:layout_width="match_parent" android:layout_height="wrap_content"
-                    android:text="完了"
-                    android:id="@+id/mealsDataInputFinishButton"/>
+                    android:text="ほぼ毎日食べる"
+                    android:textSize="40sp"
+                    android:id="@+id/mealsResponseButton03"/>
+            <Button android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:text="2日に1回食べる"
+                    android:textSize="40sp"
+                    android:id="@+id/mealsResponseButton02"/>
+            <Button android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:text="週に1，2回食べる"
+                    android:textSize="40sp"
+                    android:id="@+id/mealsResponseButton01"/>
+            <Button android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:text="ほとんど食べない"
+                    android:textSize="40sp"
+                    android:id="@+id/mealsResponseButton00"/>
+
+            <Space android:layout_width="match_parent" android:layout_height="30dp"/>
+
+            <Button android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="一つ前の質問に戻る"
+                    android:id="@+id/mealsNextQuestionButton"
+                    android:textSize="40dp"/>
+
         </LinearLayout>
     </ScrollView>
+
 
 </LinearLayout>

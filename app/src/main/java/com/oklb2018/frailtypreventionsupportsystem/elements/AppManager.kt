@@ -44,5 +44,14 @@ class AppManager {
         public fun deffDate(c1: Calendar, c2: Calendar = firstDay): Int{
             return ((c1.time.time - c2.time.time) / (1000 * 60 * 60 * 24)).toInt()
         }
+
+        public fun deffDateString(c1: Calendar, c2: Calendar): String {
+            val d = c1.time.time - c2.time.time
+            val mil = d.toInt() % 1000
+            val sec = (d / 1000).toInt() % 60
+            val min = (d / 1000 / 60).toInt() % 60
+            val hou = (d / 1000 / 60 / 60).toInt() % 60
+            return String.format("%02d:%02d:%02d:%03d\n", hou, min, sec, mil)
+        }
     }
 }
